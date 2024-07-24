@@ -1,7 +1,7 @@
-Dx Data Store
-*************
+Dx Datastore
+************
 
-Dx is an semi-structured in-memory data store with copy-on-write semantics for
+Dx is an semi-structured in-memory datastore with copy-on-write semantics for
 fast concurrent access.  Records are schema-less name-value pairs that are
 grouped together into buckets.  Each record must have an integer 'id' field
 that is unique within the bucket.
