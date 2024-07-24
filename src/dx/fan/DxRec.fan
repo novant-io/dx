@@ -16,7 +16,7 @@ using concurrent
 @Js const class DxRec
 {
   ** Construct a new DxRec instance.
-  internal new make(Str:Obj? map := [:])
+  new make(Str:Obj? map := [:])
   {
     this.map = map
     this.id  = map["id"] ?: throw ArgErr("Missing 'id' key")
