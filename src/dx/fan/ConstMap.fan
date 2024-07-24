@@ -86,6 +86,17 @@
     return privMake(newroot, addedLeaf.val == null ? sz : sz+1)
   }
 
+  ** Return a new map with all given 'vals' set by 'id'.
+  ConstMap setAll(Int:Obj vals)
+  {
+    // TODO FIXIT: can we optimize this?
+    temp := this
+    vals.each |val, id| {
+      temp = temp.set(id, val)
+    }
+    return temp
+  }
+
   ** Return a new map with record with given 'id' removed. Returns
   ** 'this' if record did not exist.
   ConstMap remove(Int id)

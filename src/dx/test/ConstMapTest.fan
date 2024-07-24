@@ -59,6 +59,22 @@
     verifyErr(NotImmutableErr#) { c.set(10, [1,2,3]) }
   }
 
+  Void testSetAll()
+  {
+    a := ConstMap()
+    b := a.setAll([1:"alpha", 2:"beta"])
+    c := b.setAll([3:"gamma", 4:"delta"])
+
+    verifyEq(a.size, 0)
+    verifyEq(b.size, 2)
+    verifyEq(c.size, 4)
+
+    d := c.setAll([1:"alpha-2", 4:"delta-2"])
+    verifyEq(d.size, 4)
+    verifyEq(d.get(1), "alpha-2")
+    verifyEq(d.get(4), "delta-2")
+  }
+
   Void testSetKeys()
   {
     temp := Int:Int[:]
