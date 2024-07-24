@@ -58,6 +58,18 @@
     return set(id, val)
   }
 
+  ** Return a new map with all given 'vals' added by 'id', or
+  ** throw 'ArgErr' if 'id' already exists.
+  ConstMap addAll(Int:Obj vals)
+  {
+    // TODO FIXIT: can we optimize this?
+    temp := this
+    vals.each |val, id| {
+      temp = temp.add(id, val)
+    }
+    return temp
+  }
+
   ** Return a new map with the given 'val' set using 'id' as key.
   @Operator
   ConstMap set(Int id, Obj val)

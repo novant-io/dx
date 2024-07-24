@@ -102,6 +102,19 @@
     verifyErr(ArgErr#) { m = m.add(6, "err") }
   }
 
+  Void testAddAll()
+  {
+    a := ConstMap()
+    b := a.addAll([1:"alpha", 2:"beta"])
+    c := b.addAll([3:"gamma", 4:"delta"])
+
+    verifyEq(a.size, 0)
+    verifyEq(b.size, 2)
+    verifyEq(c.size, 4)
+
+    verifyErr(ArgErr#) { x := b.addAll([2:"err"]) }
+  }
+
 //////////////////////////////////////////////////////////////////////////
 // testGet
 //////////////////////////////////////////////////////////////////////////
