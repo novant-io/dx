@@ -49,6 +49,13 @@
     verifyRec(a.get("foo", 2), ["id":2, "a":24, "b":"bar", "c":true])
     verifyRec(a.get("foo", 3), ["id":3, "a":18, "b":"zar", "c":false])
 
+    // verify each
+    verifyBucket(a, "foo", [
+      ["id":1, "a":12, "b":"foo", "c":false],
+      ["id":2, "a":24, "b":"bar", "c":true],
+      ["id":3, "a":18, "b":"zar", "c":false],
+    ])
+
     // add some recs
     w := DxWriter(a)
     w.add("foo", ["id":4, "a":33, "b":"car"])

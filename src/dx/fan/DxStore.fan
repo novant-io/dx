@@ -62,6 +62,12 @@ using concurrent
     b(bucket).get(id)
   }
 
+  ** Iterate the records in the given bucket.
+  Void each(Str bucket, |DxRec rec| f)
+  {
+    b(bucket).each(f)
+  }
+
   ** Get bucket or throw 'ArgErr' if not found.
   private ConstMap b(Str name)
   {

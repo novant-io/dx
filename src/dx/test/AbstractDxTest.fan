@@ -20,4 +20,11 @@
     rec.each |v,k| { test[k] = v }
     verifyEq(test, dumb)
   }
+
+  protected Void verifyBucket(DxStore store, Str bucket, [Str:Obj?][] expect)
+  {
+    index := 0
+    verifyEq(store.size(bucket), expect.size)
+    store.each(bucket) |test| { verifyRec(test, expect[index++]) }
+  }
 }
