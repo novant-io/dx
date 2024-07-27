@@ -24,7 +24,7 @@
   ** Add a new record to given bucket, where the 'map' must
   ** contain an integer 'id' field that is unique within
   ** the given bucket.
-  This add(Str bucket, Str:Obj? map)
+  virtual This add(Str bucket, Str:Obj? map)
   {
     diff := DxDiff.makeAdd(bucket, map)
     clog.add(diff)
@@ -34,7 +34,7 @@
 
   ** Update an existing record for given bucket and record id.
   ** If record not found, this method throws 'ArgErr'.
-  This update(Str bucket, Int id, Str:Obj? changes)
+  virtual This update(Str bucket, Int id, Str:Obj? changes)
   {
     rec  := wmap[bucket].get(id) ?: throw ArgErr("Record not found '${id}'")
     diff := DxDiff.makeUpdate(bucket, id, changes)
@@ -45,7 +45,7 @@
 
   ** Delete the a record from given bucket by record id.  If
   ** record was not found, this method does nothing.
-  This delete(Str bucket, Int id)
+  virtual This delete(Str bucket, Int id)
   {
     // short-circuit if id not found
     rec := wmap[bucket].get(id)
