@@ -11,7 +11,7 @@
 *************************************************************************
 
 ** DxDiff models a modification to a 'DxRec'.
-@Js internal const class DxDiff
+@Js const class DxDiff
 {
   ** Return diff to add a rec to bucket.
   new makeAdd(Str bucket, Str:Obj? map)
@@ -41,10 +41,10 @@
   ** TODO: use Int ref instead of Str [pointer]?
   const Str bucket
 
-  ** Diff op: 0=create, 1=update, 2=delete
+  ** Diff op: 0=add, 1=update, 2=delete
   const Int op
 
-  ** The corresponding record id for this diff or 'null' for create.
+  ** The corresponding record id for this diff or 'null' for add.
   const Int? id
 
   ** Modifications to apply to record.

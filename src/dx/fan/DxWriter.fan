@@ -58,15 +58,8 @@
     return this
   }
 
-  ** Commit the current changes and return a new DxStore.
-  virtual DxStore commit()
-  {
-    // TODO: we mark this writer as commited an no longer usable?
-    return DxStore.makeWriter(this)
-  }
-
   ** Apply a list of diffs and update current store instance state.
-  private Void apply(DxDiff diff)
+  virtual Void apply(DxDiff diff)
   {
     switch (diff.op)
     {
@@ -88,6 +81,13 @@
         b := diff.bucket
         wmap[b] = wmap[b].remove(diff.id)
     }
+  }
+
+  ** Commit the current changes and return a new DxStore.
+  virtual DxStore commit()
+  {
+    // TODO: we mark this writer as commited an no longer usable?
+    return DxStore.makeWriter(this)
   }
 
   internal const Int nextVer         // version to apply on commit
