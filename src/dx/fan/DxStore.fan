@@ -22,7 +22,7 @@ using concurrent
 @Js const class DxStore
 {
   ** Create a new store and register given buckets.
-  new make(Str:DxRec[] buckets := [:])
+  new make(Int version, Str:DxRec[] buckets)
   {
     map := Str:ConstMap[:]
     buckets.each |recs, name|
@@ -32,15 +32,15 @@ using concurrent
       recs.each |r| { c = c.add(r.id, r) }
       map[name] = c
     }
-    this.version = 1
+    this.version = version
     this.bmap = map.toImmutable
   }
 
-  ** Internal ctor to create store from a writer commit log.
-  internal new makeWriter(Int version, Str:ConstMap wmap)
+  ** Create a new modified store instance from a DxWriter commit log.
+  new makeWriter(DxWriter writer)
   {
-    this.version = version
-    this.bmap = wmap.toImmutable
+    this.version = writer.nextVer
+    this.bmap    = writer.wmap.toImmutable
   }
 
   ** Version of this store.

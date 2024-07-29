@@ -59,10 +59,10 @@
   }
 
   ** Commit the current changes and return a new DxStore.
-  DxStore commit()
+  virtual DxStore commit()
   {
     // TODO: we mark this writer as commited an no longer usable?
-    return DxStore.makeWriter(nextVer, wmap)
+    return DxStore.makeWriter(this)
   }
 
   ** Apply a list of diffs and update current store instance state.
@@ -90,7 +90,7 @@
     }
   }
 
-  private Int nextVer               // version to apply on commit
-  private DxDiff[] clog := [,]      // commit log
-  private Str:ConstMap wmap := [:]  // map of bucket_name : working rec_map
+  internal const Int nextVer         // version to apply on commit
+  internal DxDiff[] clog := [,]      // commit log
+  internal Str:ConstMap wmap := [:]  // map of bucket_name : working rec_map
 }

@@ -15,17 +15,17 @@
 
   Void testEmpty()
   {
-    a := DxStore()
+    a := DxStore(1, [:])
     verifyEq(a.buckets, Str[,])
     verifyErr(ArgErr#) { x := a.get("foo", 1) }
 
-    b := DxStore(["foo":DxRec#.emptyList])
+    b := DxStore(1, ["foo":DxRec#.emptyList])
     verifyEq(b.buckets, ["foo"])
     verifyEq(b.size("foo"), 0)
     verifyEq(b.get("foo", 1), null)
     verifyErr(ArgErr#) { x := a.get("bar", 1) }
 
-    c := DxStore(["foo":DxRec#.emptyList, "bar":DxRec#.emptyList])
+    c := DxStore(1, ["foo":DxRec#.emptyList, "bar":DxRec#.emptyList])
     verifyEq(c.buckets.sort, ["bar", "foo"])
     verifyEq(c.size("foo"), 0)
     verifyEq(c.size("bar"), 0)
@@ -36,7 +36,7 @@
 
   Void testBasics()
   {
-    a := DxStore(["foo":[
+    a := DxStore(1, ["foo":[
       DxRec(["id":1, "a":12, "b":"foo", "c":false]),
       DxRec(["id":2, "a":24, "b":"bar", "c":true]),
       DxRec(["id":3, "a":18, "b":"zar", "c":false]),
