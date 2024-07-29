@@ -69,5 +69,7 @@ using concurrent
     return null
   }
 
+  override Str toStr() { map.toStr }
+
   private const Str:Obj? map
 }
