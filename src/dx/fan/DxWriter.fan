@@ -27,7 +27,6 @@
   virtual This add(Str bucket, Str:Obj? map)
   {
     diff := DxDiff.makeAdd(bucket, map)
-    clog.add(diff)
     apply(diff)
     return this
   }
@@ -38,7 +37,6 @@
   {
     rec  := wmap[bucket].get(id) ?: throw ArgErr("Record not found '${id}'")
     diff := DxDiff.makeUpdate(bucket, id, changes)
-    clog.add(diff)
     apply(diff)
     return this
   }
@@ -53,7 +51,6 @@
 
     // delete
     diff := DxDiff.makeDelete(bucket, id)
-    clog.add(diff)
     apply(diff)
     return this
   }
@@ -91,6 +88,5 @@
   }
 
   internal const Int nextVer         // version to apply on commit
-  internal DxDiff[] clog := [,]      // commit log
   internal Str:ConstMap wmap := [:]  // map of bucket_name : working rec_map
 }
