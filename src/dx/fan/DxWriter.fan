@@ -42,9 +42,6 @@
   ** Apply a list of diffs and update current store instance state.
   virtual This apply(DxDiff diff)
   {
-    // pre-proccess
-    diff = beforeApply(diff)
-
     switch (diff.op)
     {
       // add
@@ -69,9 +66,6 @@
 
     return this
   }
-
-  ** Sub-class hook to process a diff before `apply` is invoked.
-  protected DxDiff beforeApply(DxDiff diff) { diff }
 
   ** Commit the current changes and return a new DxStore.
   virtual DxStore commit()
