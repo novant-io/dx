@@ -21,42 +21,26 @@
     this.nextVer = store.version + 1
   }
 
-  ** Add a new record to given bucket, where the 'map' must
-  ** contain an integer 'id' field that is unique within
-  ** the given bucket.
+  ** Convenience for 'apply(DxDiff.makeAdd)'.
   virtual This add(Str bucket, Str:Obj? map)
   {
-    diff := DxDiff.makeAdd(bucket, map)
-    apply(diff)
-    return this
+    apply(DxDiff.makeAdd(bucket, map))
   }
 
-  ** Update an existing record for given bucket and record id.
-  ** If record not found, this method throws 'ArgErr'.
+  ** Convenience for 'apply(DxDiff.makeUpdate)'.
   virtual This update(Str bucket, Int id, Str:Obj? changes)
   {
-    rec  := wmap[bucket].get(id) ?: throw ArgErr("Record not found '${id}'")
-    diff := DxDiff.makeUpdate(bucket, id, changes)
-    apply(diff)
-    return this
+    apply(DxDiff.makeUpdate(bucket, id, changes))
   }
 
-  ** Delete the a record from given bucket by record id.  If
-  ** record was not found, this method does nothing.
+  ** Convenience for 'apply(DxDiff.makeDelete)'.
   virtual This delete(Str bucket, Int id)
   {
-    // short-circuit if id not found
-    rec := wmap[bucket].get(id)
-    if (rec == null) return this
-
-    // delete
-    diff := DxDiff.makeDelete(bucket, id)
-    apply(diff)
-    return this
+    apply(DxDiff.makeDelete(bucket, id))
   }
 
   ** Apply a list of diffs and update current store instance state.
-  virtual Void apply(DxDiff diff)
+  virtual This apply(DxDiff diff)
   {
     switch (diff.op)
     {
@@ -69,7 +53,8 @@
       // update
       case 1:
         b := diff.bucket
-        c := (DxRec)wmap[b].get(diff.id)
+        c := (DxRec?)wmap[b].get(diff.id)
+        if (c == null) throw ArgErr("Record not found '${diff.id}'")
         u := c.merge(diff.changes)
         wmap[b] = wmap[b].set(diff.id, u)
 
@@ -78,6 +63,7 @@
         b := diff.bucket
         wmap[b] = wmap[b].remove(diff.id)
     }
+    return this
   }
 
   ** Commit the current changes and return a new DxStore.
