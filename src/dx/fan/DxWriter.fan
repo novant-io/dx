@@ -47,15 +47,15 @@
       // add
       case 0:
         b := diff.bucket
-        r := DxRec(diff.changes)
+        r := makeRec(diff)
         wmap[b] = wmap[b].add(r.id, r)
 
       // update
       case 1:
         b := diff.bucket
-        c := (DxRec?)wmap[b].get(diff.id)
-        if (c == null) throw ArgErr("Record not found '${diff.id}'")
-        u := c.merge(diff.changes)
+        r := (DxRec?)wmap[b].get(diff.id)
+        if (r == null) throw ArgErr("Record not found '${diff.id}'")
+        u := mergeRec(r, diff)
         wmap[b] = wmap[b].set(diff.id, u)
 
       // delete
@@ -65,6 +65,18 @@
     }
 
     return this
+  }
+
+  ** Subclass hook to override 'add' rec behavior.
+  protected virtual DxRec makeRec(DxDiff diff)
+  {
+    DxRec(diff.changes)
+  }
+
+  ** Subclass hook to override 'update' rec behavior.
+  protected virtual DxRec mergeRec(DxRec rec, DxDiff diff)
+  {
+    rec.merge(diff.changes)
   }
 
   ** Commit the current changes and return a new DxStore.
