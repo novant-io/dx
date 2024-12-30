@@ -68,6 +68,20 @@ using concurrent
     b(bucket).each(f)
   }
 
+  ** Get the first record in given bucket for which callback returns
+  ** true, or return 'null' if callback is false for every record.
+  DxRec? find(Str bucket, |DxRec->Bool| f)
+  {
+    // TODO: optimize this!
+    DxRec? found
+    b(bucket).each |rec|
+    {
+      if (found != null) return
+      if (f(rec) == true) found = rec
+    }
+    return found
+  }
+
   ** Get bucket or throw 'ArgErr' if not found.
   private ConstMap b(Str name)
   {

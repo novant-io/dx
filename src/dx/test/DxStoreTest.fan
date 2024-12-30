@@ -72,6 +72,11 @@
     verifyRec(b.get("foo", 4), ["id":4, "a":33, "b":"car"])
     verifyRec(b.get("foo", 5), ["id":5, "a":99, "b":"lar"])
 
+    // find
+    verifyEq(b.find("foo") |r| { r->a == -1 }, null)
+    verifyEq(b.find("foo") |r| { r->a == 24 }->id, 2)
+    verifyEq(b.find("foo") |r| { r->b == "zar" }->id, 3)
+
     // update some recs
     w = DxWriter(b)
     w.update("foo", 1, ["a":77, "b":"cool beans"])
