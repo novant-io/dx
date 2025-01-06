@@ -82,6 +82,13 @@ using concurrent
     return found
   }
 
+  ** Return 'true' if given callback returns true for any of the
+  ** items in given bucket, else return 'false'.
+  Bool any(Str bucket, |DxRec->Bool| f)
+  {
+    find(bucket, f) != null
+  }
+
   ** Get bucket or throw 'ArgErr' if not found.
   private ConstMap b(Str name)
   {

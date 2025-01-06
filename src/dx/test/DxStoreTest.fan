@@ -77,6 +77,11 @@
     verifyEq(b.find("foo") |r| { r->a == 24 }->id, 2)
     verifyEq(b.find("foo") |r| { r->b == "zar" }->id, 3)
 
+    // any
+    verifyEq(b.any("foo") |r| { r->a == -1 },    false)
+    verifyEq(b.any("foo") |r| { r->a == 24 },    true)
+    verifyEq(b.any("foo") |r| { r->b == "zar" }, true)
+
     // update some recs
     w = DxWriter(b)
     w.update("foo", 1, ["a":77, "b":"cool beans"])
