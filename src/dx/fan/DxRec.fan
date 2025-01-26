@@ -29,6 +29,9 @@ using concurrent
   ** for this record within the dataset.
   const Int id
 
+  ** Get the keys for this record.
+  Str[] keys() { map.keys }
+
   ** Get the value for the given `key` or 'null' if not found.
   @Operator
   Obj? get(Str key)
