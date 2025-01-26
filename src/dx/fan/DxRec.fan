@@ -30,7 +30,8 @@ using concurrent
   const Int id
 
   ** Get the keys for this record.
-  Str[] keys() { map.keys }
+  // TODO?
+  @NoDoc Str[] _keys() { map.keys }
 
   ** Get the value for the given `key` or 'null' if not found.
   @Operator
