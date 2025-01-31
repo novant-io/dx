@@ -24,22 +24,31 @@ using concurrent
   ** Create a new store and register given buckets.
   new make(Int version, Str:DxRec[] buckets)
   {
-    map := Str:ConstMap[:]
+    kmap := Str:Str[][:]
+    bmap := Str:ConstMap[:]
     buckets.each |recs, name|
     {
       // TODO: efficient way to pre-seed map?
+      k := Str:Bool[:]
       c := ConstMap()
-      recs.each |r| { c = c.add(r.id, r) }
-      map[name] = c
+      recs.each |r|
+      {
+        c = c.add(r.id, r)
+        r._keys.each |n| { k[n]=true }
+      }
+      kmap[name] = k.keys
+      bmap[name] = c
     }
     this.version = version
-    this.bmap = map.toImmutable
+    this.kmap = kmap.toImmutable
+    this.bmap = bmap.toImmutable
   }
 
   ** Create a new modified store instance from a DxWriter commit log.
   new makeWriter(DxWriter writer)
   {
     this.version = writer.nextVer
+    this.kmap    = Str:Str[][:]  // TODO FIXIT
     this.bmap    = writer.wmap.toImmutable
   }
 
@@ -54,6 +63,13 @@ using concurrent
   Int size(Str bucket)
   {
     b(bucket).size
+  }
+
+  ** Get the union of all keys for given bucket.
+  ** Throws 'ArgErr' if bucket not found.
+  Str[] keys(Str bucket)
+  {
+    kmap[bucket] ?: throw ArgErr("Bucket not found '${bucket}'")
   }
 
   ** Get record for given bucket and record id or 'null' if not found.
@@ -95,5 +111,6 @@ using concurrent
     bmap[name] ?: throw ArgErr("Bucket not found '${name}'")
   }
 
+  private const Str:Str[] kmap       // map of bucket_name : keys[]
   internal const Str:ConstMap bmap   // map of bucket_name : rec_map
 }

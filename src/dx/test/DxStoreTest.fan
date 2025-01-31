@@ -45,6 +45,7 @@
     verifyEq(a.buckets, ["foo"])
     verifyEq(a.version, 1)
     verifyEq(a.size("foo"), 3)
+    verifyEq(a.keys("foo").rw.sort, Str["a", "b", "c", "id"])
     verifyRec(a.get("foo", 1), ["id":1, "a":12, "b":"foo", "c":false])
     verifyRec(a.get("foo", 2), ["id":2, "a":24, "b":"bar", "c":true])
     verifyRec(a.get("foo", 3), ["id":3, "a":18, "b":"zar", "c":false])
