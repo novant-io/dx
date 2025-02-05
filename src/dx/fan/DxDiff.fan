@@ -49,4 +49,9 @@
 
   ** Modifications to apply to record.
   const [Str:Obj?]? changes
+
+  override Str toStr()
+  {
+    "{ op:$op bucket:$bucket id:$id mod:$changes }"
+  }
 }
