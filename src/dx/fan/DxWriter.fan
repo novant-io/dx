@@ -47,7 +47,7 @@
       // add
       case 0:
         b := diff.bucket
-        r := makeRec(diff)
+        r := newRec(diff)
         wmap[b] = wmap[b].add(r.id, r)
 
       // update
@@ -68,15 +68,29 @@
   }
 
   ** Subclass hook to override 'add' rec behavior.
-  protected virtual DxRec makeRec(DxDiff diff)
+  protected virtual DxRec newRec(DxDiff diff)
   {
-    DxRec(diff.changes)
+    makeRec(diff.changes)
   }
 
   ** Subclass hook to override 'update' rec behavior.
   protected virtual DxRec mergeRec(DxRec rec, DxDiff diff)
   {
-    rec.merge(diff.changes)
+    temp := rec.map.dup
+    diff.changes.each |v,k|
+    {
+      // can never modify id
+      if (k == "id") return
+      if (v == null) temp.remove(k)
+      else temp[k] = v
+    }
+    return makeRec(temp)
+  }
+
+  ** Subclass hook to create 'DxRec' instance from given field map.
+  protected virtual DxRec makeRec(Str:Obj? map)
+  {
+    DxRec(map)
   }
 
   ** Commit the current changes and return a new DxStore.

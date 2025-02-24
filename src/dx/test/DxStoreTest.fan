@@ -117,5 +117,17 @@
     verifyRec(b.get("foo", 1), ["id":1, "a":12, "b":"foo",        "c":false])
     verifyRec(c.get("foo", 1), ["id":1, "a":77, "b":"cool beans", "c":false])
     verifyEq( d.get("foo", 1), null)
+
+    // verify cannot change 'id'
+    w = DxWriter(a)
+    w.update("foo", 1, ["id":99, "a":88])
+    e := w.commit
+    verifyRec(e.get("foo", 1), ["id":1, "a":88, "b":"foo", "c":false])
+
+    // remove fields
+    w = DxWriter(a)
+    w.update("foo", 1, ["b":null, "c":null])
+    f := w.commit
+    verifyRec(f.get("foo", 1), ["id":1, "a":12])
   }
 }

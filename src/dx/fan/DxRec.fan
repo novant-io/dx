@@ -46,21 +46,6 @@ using concurrent
     map.each |v,k| { f(v,k) }
   }
 
-  ** Merge the given changes with the current record and
-  ** return a new instance.
-  DxRec merge(Str:Obj? changes)
-  {
-    temp := map.dup
-    changes.each |v,k|
-    {
-      // can never modify id
-      if (k == "id") return
-      if (v == null) temp.remove(k)
-      else temp[k] = v
-    }
-    return DxRec(temp)
-  }
-
   **
   ** Convenience for `get`:
   **
@@ -75,5 +60,5 @@ using concurrent
 
   override Str toStr() { map.toStr }
 
-  private const Str:Obj? map
+  internal const Str:Obj? map
 }
