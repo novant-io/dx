@@ -46,6 +46,9 @@ using concurrent
     map.each |v,k| { f(v,k) }
   }
 
+  ** Create a copy of this record as a 'Str:Obj?' map.
+  Str:Obj? dupMap() { map.dup }
+
   **
   ** Convenience for `get`:
   **
