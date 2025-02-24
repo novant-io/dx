@@ -61,6 +61,7 @@
       // delete
       case 2:
         b := diff.bucket
+        deleteRec(diff)
         wmap[b] = wmap[b].remove(diff.id)
     }
 
@@ -91,6 +92,11 @@
   protected virtual DxRec makeRec(Str:Obj? map)
   {
     DxRec(map)
+  }
+
+  ** Subclass hook to override 'delete' rec behavior.
+  protected virtual Void deleteRec(DxDiff diff)
+  {
   }
 
   ** Commit the current changes and return a new DxStore.
