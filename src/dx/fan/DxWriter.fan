@@ -39,19 +39,25 @@
     apply(DxDiff.makeDelete(bucket, id))
   }
 
+  ** Convenience for 'apply(DxDiff.makeAddBucket)'.
+  virtual This addBucket(Str bucket)
+  {
+    apply(DxDiff.makeAddBucket(bucket))
+  }
+
   ** Apply a list of diffs and update current store instance state.
   virtual This apply(DxDiff diff)
   {
     switch (diff.op)
     {
       // add
-      case 0:
+      case 0x00:
         b := diff.bucket
         r := newRec(diff)
         wmap[b] = wmap[b].add(r.id, r)
 
       // update
-      case 1:
+      case 0x01:
         b := diff.bucket
         r := (DxRec?)wmap[b].get(diff.id)
         if (r == null) throw ArgErr("Record not found '${diff.id}'")
@@ -59,10 +65,15 @@
         wmap[b] = wmap[b].set(diff.id, u)
 
       // delete
-      case 2:
+      case 0x02:
         b := diff.bucket
         deleteRec(diff)
         wmap[b] = wmap[b].remove(diff.id)
+
+      // add_bucket
+      case 0x10:
+        b := diff.bucket
+        wmap[b] = ConstMap()
     }
 
     return this

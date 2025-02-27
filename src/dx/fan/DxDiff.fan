@@ -17,7 +17,7 @@
   new makeAdd(Str bucket, Str:Obj? map)
   {
     this.bucket = bucket
-    this.op  = 0
+    this.op  = 0x00
     this.changes = map
   }
 
@@ -25,7 +25,7 @@
   new makeUpdate(Str bucket, Int id, Str:Obj? changes)
   {
     this.bucket = bucket
-    this.op  = 1
+    this.op  = 0x01
     this.id  = id
     this.changes = changes
   }
@@ -34,14 +34,28 @@
   new makeDelete(Str bucket, Int id)
   {
     this.bucket = bucket
-    this.op  = 2
+    this.op  = 0x02
     this.id  = id
+  }
+
+  ** Return diff to add a bucket.
+  new makeAddBucket(Str bucket)
+  {
+    this.bucket = bucket
+    this.op  = 0x10
   }
 
   ** TODO: use Int ref instead of Str [pointer]?
   const Str bucket
 
-  ** Diff op: 0=add, 1=update, 2=delete
+  **
+  ** Diff op:
+  **
+  **   0x00 = add
+  **   0x01 = update
+  **   0x02 = delete
+  **   0x10 = add_bucket
+  **
   const Int op
 
   ** The corresponding record id for this diff or 'null' for add.
