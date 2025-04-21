@@ -48,8 +48,19 @@ using concurrent
   new makeWriter(DxWriter writer)
   {
     this.version = writer.nextVer
-    this.kmap    = Str:Str[][:]  // TODO FIXIT
     this.bmap    = writer.wmap.toImmutable
+
+    // TODO FIXIT
+    kmap := Str:Str[][:]
+    bmap.keys.each |bname|
+    {
+      k := Str:Bool[:]
+      this.each(bname) |r| {
+        r._keys.each |n| { k[n]=true }
+      }
+      kmap[bname] = k.keys
+    }
+    this.kmap = kmap
   }
 
   ** Version of this store.
