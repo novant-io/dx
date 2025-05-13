@@ -42,4 +42,50 @@
     verifyRec(c.get("new_bucket", 1), ["id":1, "name":"R1"])
     verifyRec(c.get("new_bucket", 2), ["id":2, "name":"R2"])
   }
+
+//////////////////////////////////////////////////////////////////////////
+// Add Rec
+//////////////////////////////////////////////////////////////////////////
+
+  Void testAddRec()
+  {
+    a := DxStore(1, ["foo":[
+      DxRec(["id":1, "a":12, "b":"foo", "c":false]),
+      DxRec(["id":2, "a":24, "b":"bar", "c":true]),
+      DxRec(["id":3, "a":18, "b":"zar", "c":false]),
+    ]])
+
+    // add a new recored
+    w := DxWriter(a)
+    w.add("foo", ["id":4, "a":100])
+    b := w.commit
+    verify(a !== b)
+    verifyEq(a.version, 1)
+    verifyEq(b.version, 2)
+    verifyEq(b.size("foo"), 4)
+    verifyRec(b.get("foo", 4), ["id":4, "a":100])
+  }
+
+//////////////////////////////////////////////////////////////////////////
+// Add + Update
+//////////////////////////////////////////////////////////////////////////
+
+  Void testAddThenUpdate()
+  {
+    a := DxStore(1, ["foo":[
+      DxRec(["id":1, "a":12, "b":"foo", "c":false]),
+      DxRec(["id":2, "a":24, "b":"bar", "c":true]),
+      DxRec(["id":3, "a":18, "b":"zar", "c":false]),
+    ]])
+
+    // add a new recored
+    w := DxWriter(a)
+    w.add("foo", ["id":4, "a":100])
+    w.update("foo", 4, ["a":101, "b":"sweet"])
+    b := w.commit
+    verify(a !== b)
+    verifyEq(a.version, 1)
+    verifyEq(b.version, 2)
+    verifyRec(b.get("foo", 4), ["id":4, "a":101, "b":"sweet"])
+  }
 }
