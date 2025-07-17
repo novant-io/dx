@@ -29,7 +29,7 @@ using concurrent
     buckets.each |recs, name|
     {
       // TODO: efficient way to pre-seed map?
-      k := Str:Bool[:]
+      k := Str:Bool[:] { it.ordered=true }
       c := ConstMap()
       recs.each |r|
       {
