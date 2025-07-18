@@ -22,7 +22,7 @@ using concurrent
     this.id  = map["id"] ?: throw ArgErr("Missing 'id' key")
 
     // record ids must be within 1..4294967295
-    if (id  < 1 || id  > 0xffff_ffff) throw ArgErr("Record id out of bounds: $id")
+    if (id < 1 || id > 0xffff_ffff) throw ArgErr("Record id out of bounds: $id")
   }
 
   ** Convenience for 'rec->id' to get the unique ID
