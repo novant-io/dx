@@ -58,22 +58,32 @@
 
       // update
       case 0x01:
+      case 0x41:
         b := diff.bucket
-        r := (DxRec?)wmap[b].get(diff.id)
-        if (r == null) throw ArgErr("Record not found '${diff.id}'")
-        u := mergeRec(r, diff)
-        wmap[b] = wmap[b].set(diff.id, u)
+        diff.eachId |id|
+        {
+          r := (DxRec?)wmap[b].get(id)
+          if (r == null) throw ArgErr("Record not found '${id}'")
+          u := mergeRec(r, diff)
+          wmap[b] = wmap[b].set(id, u)
+        }
 
       // delete
       case 0x02:
+      case 0x42:
         b := diff.bucket
-        deleteRec(diff)
-        wmap[b] = wmap[b].remove(diff.id)
+        diff.eachId |id|
+        {
+          deleteRec(b, id)
+          wmap[b] = wmap[b].remove(id)
+        }
 
       // add_bucket
       case 0x10:
         b := diff.bucket
         wmap[b] = ConstMap()
+
+      default: throw ArgErr("Invalid op: 0x${diff.op.toHex(2)}")
     }
 
     return this
@@ -106,7 +116,7 @@
   }
 
   ** Subclass hook to override 'delete' rec behavior.
-  protected virtual Void deleteRec(DxDiff diff)
+  protected virtual Void deleteRec(Str bucket, Int id)
   {
   }
 

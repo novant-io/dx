@@ -64,6 +64,12 @@
   ** Modifications to apply to record.
   const [Str:Obj?]? changes
 
+  ** Iterate id(s) in this diff.
+  virtual Void eachId(|Int id| f)
+  {
+    if (id != null) f(id)
+  }
+
   override Str toStr()
   {
     "{ op:$op bucket:$bucket id:$id mod:$changes }"

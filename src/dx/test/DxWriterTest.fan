@@ -88,4 +88,41 @@
     verifyEq(b.version, 2)
     verifyRec(b.get("foo", 4), ["id":4, "a":101, "b":"sweet"])
   }
+
+//////////////////////////////////////////////////////////////////////////
+// Batch
+//////////////////////////////////////////////////////////////////////////
+
+  Void testBatchUpdate()
+  {
+    a := DxStore(1, ["foo":[
+      DxRec(["id":1, "a":12, "b":"foo", "c":false]),
+      DxRec(["id":2, "a":24, "b":"bar", "c":true]),
+      DxRec(["id":3, "a":18, "b":"zar", "c":false]),
+    ]])
+
+    // batch update
+    w := DxWriter(a)
+    w.apply(DxBatchDiff.makeUpdate("foo", [1,2], ["b":"xxx"]))
+    b := w.commit
+    verify(a !== b)
+    verifyEq(a.version, 1)
+    verifyEq(b.version, 2)
+    verifyEq(b.size("foo"), 3)
+    verifyRec(b.get("foo", 1), ["id":1, "a":12, "b":"xxx", "c":false])
+    verifyRec(b.get("foo", 2), ["id":2, "a":24, "b":"xxx", "c":true])
+    verifyRec(b.get("foo", 3), ["id":3, "a":18, "b":"zar", "c":false])
+
+    // batch delete
+    w = DxWriter(b)
+    w.apply(DxBatchDiff.makeDelete("foo", [1,3]))
+    c := w.commit
+    verify(b !== c)
+    verifyEq(b.version, 2)
+    verifyEq(c.version, 3)
+    verifyEq(c.size("foo"), 1)
+    verifyEq(c.get("foo",  1), null)
+    verifyRec(c.get("foo", 2), ["id":2, "a":24, "b":"xxx", "c":true])
+    verifyEq(c.get("foo",  3), null)
+  }
 }
